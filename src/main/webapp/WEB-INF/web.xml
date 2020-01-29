@@ -1,0 +1,43 @@
+<web-app version="3.0">
+  <display-name>Archetype Created Web Application</display-name>
+
+  <servlet>
+    <servlet-name>Servlet</servlet-name>
+    <servlet-class>org.library.controller.Servlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Servlet</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <filter>
+    <filter-name>EncodingFilter</filter-name>
+    <filter-class>org.library.controller.filter.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>EncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>AuthFilter</filter-name>
+    <filter-class>org.library.controller.filter.AuthFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+
+  <listener>
+    <listener-class>
+      org.library.controller.listener.SessionListener
+    </listener-class>
+</listener>
+
+
+
+  <!-- <context-param>
+     <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+     <param-value>resources.messages</param-value>
+   </context-param>-->
+</web-app>
