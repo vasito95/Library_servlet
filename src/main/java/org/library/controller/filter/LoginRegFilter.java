@@ -13,8 +13,11 @@ import java.io.IOException;
 public class LoginRegFilter implements Filter {
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request,
+                         ServletResponse response,
+                         FilterChain filterChain) throws IOException, ServletException {
 
+        System.out.println("AUTH");
         HttpServletRequest req = (HttpServletRequest) request;
 
         HttpSession session = req.getSession();

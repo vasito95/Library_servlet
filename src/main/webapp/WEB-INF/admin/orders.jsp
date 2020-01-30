@@ -13,6 +13,6 @@
 <body>
 <a href="${pageContext.request.contextPath}/admin/library">Library</a>
 <a href="${pageContext.request.contextPath}/admin/orders">Accept Orders</a>
-<a href="${pageContext.request.contextPath}/admin/add-book">Library</a>
+<a href="${pageContext.request.contextPath}/admin/add-book">Addbook</a>
 </body>
 </html>

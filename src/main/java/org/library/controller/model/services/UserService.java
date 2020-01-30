@@ -19,7 +19,7 @@ public class UserService {
         this.dao.delete(id);
     }
 
-    public Optional<User> getUserByEmail(String email){
+    public Optional<User> findUserByEmail(String email){
        return this.dao.findByName(email);
     }
 

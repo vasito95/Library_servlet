@@ -33,7 +33,10 @@
       org.library.controller.listener.SessionListener
     </listener-class>
 </listener>
-
+  <error-page>
+    <exception-type>java.lang.Exception</exception-type>
+    <location>/WEB-INF/error.jsp</location>
+  </error-page>
 
 
   <!-- <context-param>

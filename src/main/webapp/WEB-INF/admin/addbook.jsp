@@ -6,7 +6,7 @@
 <body>
 <a href="${pageContext.request.contextPath}/admin/library">Library</a>
 <a href="${pageContext.request.contextPath}/admin/orders">Accept Orders</a>
-<a href="${pageContext.request.contextPath}/admin/add-book">Library</a>
-<h1>${pageContext.request.contextPath}</h1>
+<a href="${pageContext.request.contextPath}/admin/add-book">Add book</a>
+
 </body>
 </html>

@@ -21,6 +21,7 @@ public class Book {
     private String name;
 
     private List<String> authors;
+    private List<String> attributes;
 
     private User user;
 
