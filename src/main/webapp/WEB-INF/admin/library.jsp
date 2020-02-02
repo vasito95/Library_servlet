@@ -1,18 +1,35 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Vasyl Brusak
-  Date: 2020-01-29
-  Time: 5:54 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setBundle basename="messages" var="msg" scope="session"/>
+<html lang="${sessionScope.lang}">
 <head>
     <title>Library</title>
 </head>
 <body>
-<a href="${pageContext.request.contextPath}/admin/library">Library</a>
-<a href="${pageContext.request.contextPath}/admin/orders">Accept Orders</a>
-<a href="${pageContext.request.contextPath}/admin/add-book">Addbook</a>
+<jsp:include page="adminheader.jsp"></jsp:include>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Book Name</th>
+        <th>InUseBy</th>
+        <th>User</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${books}" var="book">
+        <tr>
+            <td>${book.id}</td>
+            <td>${book.name}</td>
+            <td>${book.inUseBy}</td>
+            <td>${book.user.username}</td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
 </body>
 </html>

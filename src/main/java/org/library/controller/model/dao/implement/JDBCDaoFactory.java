@@ -2,9 +2,9 @@ package org.library.controller.model.dao.implement;
 
 import org.library.controller.model.dao.BookDao;
 import org.library.controller.model.dao.DaoFactory;
+import org.library.controller.model.dao.OrderDao;
 import org.library.controller.model.dao.UserDao;
 
-import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,6 +24,8 @@ public class JDBCDaoFactory extends DaoFactory {
         }
     }
 
+    @Override
+    public OrderDao createOrderDao() { return new JDBCOrderDao(getConnection()); }
     @Override
     public UserDao createUserDao() {
         return new JDBCUserDao(getConnection());

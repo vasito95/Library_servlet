@@ -19,9 +19,10 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-        final String email = request.getParameter("email");
-        final String pass = request.getParameter("password");
-
+       // final String email = request.getParameter("email");
+        //final String pass = request.getParameter("password");
+        String email = "admin1@gmail.com";
+        String pass = "8520";
 
         if (email == null || email.equals("") || pass == null || pass.equals("")) {
             return "/login.jsp";
@@ -48,6 +49,8 @@ public class LoginCommand implements Command {
         loggedUsers.add(u.getEmail());
         session.getServletContext().setAttribute("loggedUsers", loggedUsers);
         session.setAttribute("userEmail", u.getEmail());
+        session.setAttribute("userName", u.getUsername());
+        session.setAttribute("userId", u.getId());
         userRole = u.getRoles();
 
         if (userRole.contains(Role.ADMIN)) {

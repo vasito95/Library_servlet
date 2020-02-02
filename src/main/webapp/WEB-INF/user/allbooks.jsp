@@ -32,12 +32,11 @@
             <td>${book.name}</td>
             <td>${book.isInUse}</td>
             <td>${book.authors}</td>
-            <td>${book.attributes}</td>
+            <td>${book.attribute}</td>
         </tr>
     </c:forEach>
 
     </tbody>
 </table>
-</form>
 </body>
 </html>

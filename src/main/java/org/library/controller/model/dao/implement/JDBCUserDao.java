@@ -71,7 +71,6 @@ public class JDBCUserDao implements UserDao {
     }
 
     private void setUserRole(Long id, Role role){
-
         String query = "INSERT INTO user_role (user_id, roles) VALUES (?, ?)";
         try (PreparedStatement st = connection.prepareStatement(query)){
             st.setLong(1, id);

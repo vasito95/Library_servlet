@@ -12,7 +12,9 @@ public class LogoutCommand implements Command {
         loggedUsers.remove(userEmail);
         request.getSession().getServletContext().setAttribute("loggedUsers", loggedUsers);
         request.getSession().removeAttribute("userEmail");
+        request.getSession().removeAttribute("userName");
         request.getSession().removeAttribute("role");
+        request.getSession().removeAttribute("userId");
         return "redirect:/login";
     }
 }

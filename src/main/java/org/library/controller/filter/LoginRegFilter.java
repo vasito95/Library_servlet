@@ -17,7 +17,6 @@ public class LoginRegFilter implements Filter {
                          ServletResponse response,
                          FilterChain filterChain) throws IOException, ServletException {
 
-        System.out.println("AUTH");
         HttpServletRequest req = (HttpServletRequest) request;
 
         HttpSession session = req.getSession();

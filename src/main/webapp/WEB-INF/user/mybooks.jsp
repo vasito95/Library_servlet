@@ -14,5 +14,24 @@
 <a href="${pageContext.request.contextPath}/user/all-books">All books</a>
 <a href="${pageContext.request.contextPath}/user/my-books">My books</a>
 <a href="${pageContext.request.contextPath}/user/order-book">Order book</a>
+<table class="table">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Book Name</th>
+        <th>In use by</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${books}" var="book">
+        <tr>
+            <td>${book.id}</td>
+            <td>${book.name}</td>
+            <td>${book.inUseBy}</td>
+        </tr>
+    </c:forEach>
+
+    </tbody>
+</table>
 </body>
 </html>
