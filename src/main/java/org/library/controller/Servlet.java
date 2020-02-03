@@ -47,19 +47,20 @@ public class Servlet extends HttpServlet {
         commands.put("login", new LoginCommand(userService));
         commands.put("registration", new RegistrationCommand(userService));
         commands.put("admin", new AdminCommand());
-        commands.put("user", new UserCommand());
         commands.put("admin/library", new LibraryCommand(bookService));
         commands.put("admin/add-book", new AddBookCommand(bookService));
-        commands.put("admin/orders", new OrdersCommand(orderService));
-        commands.put("admin/orders/accept", new OrdersCommand(orderService));
-        commands.put("admin/orders/decline", new OrdersCommand(orderService));
-        commands.put("error", new ErrorCommand());
+        commands.put("admin/orders", new OrdersCommand(orderService, bookService));
+        commands.put("admin/orders/accept", new OrdersCommand(orderService, bookService));
+        commands.put("admin/orders/decline", new OrdersCommand(orderService, bookService));
+        commands.put("admin/edit-books", new EditBooksCommand(bookService));
         commands.put("admin/logout", new LogoutCommand());
-        commands.put("/logout", new LogoutCommand());
-        commands.put("user/logout", new LogoutCommand());
+        commands.put("user", new UserCommand());
         commands.put("user/all-books", new AllBooksCommand(bookService));
         commands.put("user/my-books", new MyBooksCommand(bookService));
         commands.put("user/order-book", new OrderBooksCommand(orderService, bookService));
+        commands.put("user/logout", new LogoutCommand());
+        commands.put("/logout", new LogoutCommand());
+        commands.put("error", new ErrorCommand());
 
     }
 

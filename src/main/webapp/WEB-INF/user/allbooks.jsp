@@ -11,10 +11,7 @@
 <body>
 <a href="?sessionLocale=en">En</a>
 <a href="?sessionLocale=ua">Ua</a>
-
-<a href="${pageContext.request.contextPath}/user/all-books">All books</a>
-<a href="${pageContext.request.contextPath}/user/my-books">My books</a>
-<a href="${pageContext.request.contextPath}/user/order-book">Order book</a>
+<jsp:include page="userheader.jsp"></jsp:include>
 <table class="table">
     <thead>
     <tr>

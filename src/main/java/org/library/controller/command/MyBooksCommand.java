@@ -12,7 +12,12 @@ public class MyBooksCommand implements Command {
     }
     @Override
     public String execute(HttpServletRequest request) {
+        final String id = request.getParameter("bookId");
+        if(id != null && !id.equals("")){
+            this.bookService.returnBook(Long.parseLong(id),(Long) request.getSession().getAttribute("userId"));
+        }
         request.setAttribute("books", bookService.findAllByUserId((Long) request.getSession().getAttribute("userId")));
+
         return "/WEB-INF/user/mybooks.jsp";
     }
 }

@@ -6,6 +6,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class JDBCOrderDao implements OrderDao {
 
@@ -46,17 +47,6 @@ public class JDBCOrderDao implements OrderDao {
         return resultList;
     }
 
-    static Order extractFromResultSet(ResultSet rs) throws SQLException{
-        Order result = new Order();
-        result.setId(rs.getLong("id"));
-        result.setBookId(rs.getLong("book_id"));
-        result.setBookName(rs.getString("book_name"));
-        result.setDateTo(LocalDate.parse(rs.getString("date_to")));
-        result.setUserName(rs.getString("user_name"));
-        result.setUsrId(rs.getLong("usr_id"));
-        return result;
-    }
-
     @Override
     public void delete(Long id) {
         String query = "DELETE FROM book_order where id=?";
@@ -69,18 +59,30 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public void acceptOrder(Long id) {
-        String query = "UPDATE ";
-        try (PreparedStatement st = connection.prepareStatement(query)){
-            st.executeUpdate();
-        } catch (SQLException e) {
+    public Optional<Order> findByOrderId(Long id) {
+        Optional<Order> order = Optional.empty();
+        String query = "select * from book_order where id=?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setLong(1,id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                 order = Optional.of(extractFromResultSet(rs));
+            }
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        return order;
     }
 
-    @Override
-    public void update(Order entity) {
-
+    static Order extractFromResultSet(ResultSet rs) throws SQLException{
+        Order result = new Order();
+        result.setId(rs.getLong("id"));
+        result.setBookId(rs.getLong("book_id"));
+        result.setBookName(rs.getString("book_name"));
+        result.setDateTo(LocalDate.parse(rs.getString("date_to")));
+        result.setUserName(rs.getString("user_name"));
+        result.setUsrId(rs.getLong("usr_id"));
+        return result;
     }
 
     @Override
@@ -90,6 +92,11 @@ public class JDBCOrderDao implements OrderDao {
 
     @Override
     public void close() throws Exception {
+
+    }
+
+    @Override
+    public void update(Order entity) {
 
     }
 }

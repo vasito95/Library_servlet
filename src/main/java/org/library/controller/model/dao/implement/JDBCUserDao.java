@@ -38,7 +38,6 @@ public class JDBCUserDao implements UserDao {
         String query = "SELECT * from library.user left join library.user_role on user.id=user_role.user_id where user.username=?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, name);
-            System.out.println(statement);
             ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
                 return Optional.of(extractFromResultSet(resultSet));
@@ -88,7 +87,6 @@ public class JDBCUserDao implements UserDao {
         result.setUsername(rs.getString("username"));
         result.setEmail(rs.getString("email"));
         result.setRoles(Collections.singleton(Role.valueOf(rs.getString("roles"))));
-        System.out.println(result);
         return result;
     }
 

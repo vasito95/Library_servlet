@@ -6,8 +6,6 @@
     <title>User</title>
 </head>
 <body>
-<a href="${pageContext.request.contextPath}/user/all-books">All books</a>
-<a href="${pageContext.request.contextPath}/user/my-books">My books</a>
-<a href="${pageContext.request.contextPath}/user/order-book">Order book</a>
+<jsp:include page="userheader.jsp"></jsp:include>
 </body>
 </html>

@@ -19,10 +19,10 @@ public class LoginCommand implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
-       // final String email = request.getParameter("email");
-        //final String pass = request.getParameter("password");
-        String email = "admin1@gmail.com";
-        String pass = "8520";
+        final String email = request.getParameter("email");
+        final String pass = request.getParameter("password");
+       /* String email = "admin1@gmail.com";
+        String pass = "8520";*/
 
         if (email == null || email.equals("") || pass == null || pass.equals("")) {
             return "/login.jsp";

@@ -2,6 +2,7 @@ package org.library.controller.model.dao.implement;
 
 import org.library.controller.model.dao.BookDao;
 import org.library.controller.model.entity.Book;
+import org.library.controller.model.entity.Order;
 import org.library.controller.model.entity.User;
 
 import java.sql.*;
@@ -47,6 +48,53 @@ public class JDBCBookDao implements BookDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void returnBook(Long id, Long userId) {
+        String query = "UPDATE book SET user_id=?, in_use_by=?, is_in_use=? where book.id=? and book.user_id=?";
+        try (PreparedStatement st = connection.prepareStatement(query)) {
+            st.setString(1, null);
+            st.setDate(2, null);
+            st.setBoolean(3,false);
+            st.setLong(4, id);
+            st.setLong(5,userId);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void assignUserToBook(Order order) {
+        String query = "UPDATE book SET user_id=?, in_use_by=?, is_in_use=? where book.id=? and book.is_in_use=?";
+        try (PreparedStatement st = connection.prepareStatement(query)) {
+            st.setLong(1, order.getUsrId());
+            st.setDate(2, Date.valueOf(order.getDateTo()));
+            st.setBoolean(3,true);
+            st.setLong(4, order.getBookId());
+            st.setBoolean(5,false);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Book> findAllFreeBooks(){
+        String query = "select * from book where book.is_in_use =?";
+        List<Book> resultList = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setBoolean(1, false);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Book book = extractFromResultSet(rs);
+                book.setAuthors(findAuthorsById(book.getId()));
+                resultList.add(book);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return resultList;
     }
 
     public List<Book> findAllBooksWithReaders(){
@@ -157,16 +205,15 @@ public class JDBCBookDao implements BookDao {
     public Book findById(Long id) {
         return null;
     }
+
     @Override
     public void update(Book entity) {
 
     }
-
     @Override
     public void delete(Long id) {
 
     }
-
     @Override
     public void close() throws Exception {
         this.connection.close();

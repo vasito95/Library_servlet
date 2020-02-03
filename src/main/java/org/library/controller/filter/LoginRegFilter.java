@@ -25,7 +25,6 @@ public class LoginRegFilter implements Filter {
                 session.getAttribute("role") != "")
         {
             Role role = (Role) session.getAttribute("role");
-            System.out.println(role);
             if(role.equals(Role.ADMIN)){
                 ((HttpServletResponse) response).sendRedirect("/app/admin");
                 return;

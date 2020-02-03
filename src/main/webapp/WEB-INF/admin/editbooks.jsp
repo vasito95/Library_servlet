@@ -10,5 +10,25 @@
 </head>
 <body>
 <jsp:include page="adminheader.jsp"></jsp:include>
+<table class="table">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Book Name</th>
+        <th>Authors</th>
+        <th>Attribute</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${books}" var="book">
+        <tr>
+            <td>${book.id}</td>
+            <td>${book.name}</td>
+            <td>${book.authors}</td>
+            <td>${book.attribute}</td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
 </body>
 </html>
