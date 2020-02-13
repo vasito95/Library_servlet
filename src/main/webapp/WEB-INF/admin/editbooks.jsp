@@ -26,6 +26,16 @@
             <td>${book.name}</td>
             <td>${book.authors}</td>
             <td>${book.attribute}</td>
+            <td>
+                <form action="${pageContext.request.contextPath}/admin/edit-book" method="post">
+                    <input type="hidden" name="bookId" value="${book.id}">
+                    <input type="submit" value="Edit">
+                </form>
+                <form action="${pageContext.request.contextPath}/admin/edit-books/delete" method="post">
+                    <input type="hidden" name="bookId" value="${book.id}">
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
         </tr>
     </c:forEach>
     </tbody>

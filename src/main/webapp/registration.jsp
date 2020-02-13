@@ -8,7 +8,7 @@
     <title>Registration</title>
 </head>
 <body>
-<h1>Hello</h1>
+<h1>${error}</h1>
 <form method="post" action="${pageContext.request.contextPath}/registration">
     <p>Username</p>
     <input type="text" name="username">

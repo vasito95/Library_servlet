@@ -12,6 +12,16 @@
 <a href="?sessionLocale=en">En</a>
 <a href="?sessionLocale=ua">Ua</a>
 <jsp:include page="userheader.jsp"></jsp:include>
+
+<form action="${pageContext.request.contextPath}/user/all-books" method="get">
+    <input type="text" name="search">
+    <select name="field">
+        <option selected value="name">Name</option>
+        <option value="author">Author</option>
+        <option value="attribute">Attribute</option>
+    </select>
+    <button type="submit">Search</button>
+</form>
 <table class="table">
     <thead>
     <tr>
