@@ -1,9 +1,10 @@
 package org.brs.library.filter;
 
+import org.brs.library.helper.SecurityHelper;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AuthFilter implements Filter {
@@ -18,13 +19,8 @@ public class AuthFilter implements Filter {
                          FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        String path = req.getRequestURI();
-        HttpSession session = req.getSession();
-        if ((path.contains("admin") || path.contains("user")) &&
-                (session == null ||
-                        session.getAttribute("role") == null ||
-                        session.getAttribute("role").equals("")))
-        {
+
+        if (SecurityHelper.hasAnyPermission(req)){
             res.sendRedirect("/app/login");
             return;
         }

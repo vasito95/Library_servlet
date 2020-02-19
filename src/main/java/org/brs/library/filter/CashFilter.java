@@ -12,7 +12,7 @@ public class CashFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-
+        System.out.println("CACH");
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
         httpResponse.setHeader("Cache-Control", "private, no-cache, no-store, must-revalidate");
         httpResponse.setHeader("Pragma", "no-cache");

@@ -1,10 +1,10 @@
 package org.brs.library.command;
 
 import org.brs.library.exception.OperationFailedException;
+import org.brs.library.helper.ValidationHelper;
 import org.brs.library.model.entity.Role;
 import org.brs.library.model.entity.User;
 import org.brs.library.service.UserService;
-import org.brs.library.utility.ValidationHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;

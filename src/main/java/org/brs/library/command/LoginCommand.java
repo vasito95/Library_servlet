@@ -1,8 +1,8 @@
 package org.brs.library.command;
 
+import org.brs.library.helper.ValidationHelper;
 import org.brs.library.model.entity.User;
 import org.brs.library.service.UserService;
-import org.brs.library.utility.ValidationHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

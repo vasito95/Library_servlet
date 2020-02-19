@@ -15,20 +15,23 @@ public class Book {
     public Book() {
     }
 
-    public Book(LocalDate inUseBy, Boolean isInUse, String name, List<String> authors, String attribute, User user) {
+    public Book(Long id, LocalDate inUseBy, Boolean isInUse, String name, List<String> authors, String attribute, User user) {
         this.inUseBy = inUseBy;
         this.isInUse = isInUse;
         this.name = name;
         this.authors = authors;
         this.attribute = attribute;
         this.user = user;
+        this.id = id;
     }
 
-    public static BookBuilder builder(){
+    public static BookBuilder builder() {
         return new BookBuilder();
     }
 
-    public static class BookBuilder{
+    public static class BookBuilder {
+
+        private Long id;
         private LocalDate inUseBy;
         private Boolean isInUse;
         private String name;
@@ -36,32 +39,43 @@ public class Book {
         private String attribute;
         private User user;
 
+        public BookBuilder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
         public BookBuilder setInUseBy(LocalDate inUseBy) {
             this.inUseBy = inUseBy;
             return this;
         }
+
         public BookBuilder setIsInUse(Boolean isInUse) {
-            this.isInUse = isInUse ;
+            this.isInUse = isInUse;
             return this;
         }
+
         public BookBuilder setName(String name) {
             this.name = name;
             return this;
         }
+
         public BookBuilder setAuthors(List<String> authors) {
             this.authors = authors;
             return this;
         }
+
         public BookBuilder setAttribute(String attribute) {
             this.attribute = attribute;
             return this;
         }
+
         public BookBuilder User(User user) {
             this.user = user;
             return this;
         }
+
         public Book build() {
-            return new Book(inUseBy, isInUse, name, authors, attribute, user);
+            return new Book(id, inUseBy, isInUse, name, authors, attribute, user);
         }
     }
 

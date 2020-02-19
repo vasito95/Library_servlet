@@ -18,6 +18,7 @@ public class LoginRegFilter implements Filter {
                          FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
 
         HttpSession session = req.getSession();
         if(session != null &&
@@ -26,16 +27,15 @@ public class LoginRegFilter implements Filter {
         {
             Role role = (Role) session.getAttribute("role");
             if(role.equals(Role.ADMIN)){
-                ((HttpServletResponse) response).sendRedirect("/app/admin");
+                res.sendRedirect("/app/admin");
                 return;
             }
             if(role.equals(Role.USER)){
-                ((HttpServletResponse) response).sendRedirect("/app/user");
+                res.sendRedirect("/app/user");
                 return;
             }
         }
         filterChain.doFilter(request,response);
-
     }
 
     @Override

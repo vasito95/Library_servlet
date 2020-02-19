@@ -1,8 +1,8 @@
 package org.brs.library.command;
 
+import org.brs.library.helper.ValidationHelper;
 import org.brs.library.model.entity.Book;
 import org.brs.library.service.BookService;
-import org.brs.library.utility.ValidationHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -21,23 +21,25 @@ public class EditBookCommand implements Command {
         final String[] authors = request.getParameterValues("author");
         final String attribute = request.getParameter("attribute");
         final Long bookId = Long.parseLong(request.getParameter("bookId"));
-
-        if (ValidationHelper.isStringsNullOrEmpty(name, attribute) &&
-                ValidationHelper.nonNull(bookId) ||
-                authors == null) {
-            Optional<Book> optionalBook = bookService.findById(bookId);
-            if (optionalBook.isPresent()) {
-                request.setAttribute("book", optionalBook.get());
-                return "/WEB-INF/admin/editbook.jsp";
-            }
+        System.out.println(bookId);
+        if (ValidationHelper.isNull(bookId)) {
+            return "redirect:/admin/edit-books";
         }
         if (request.getRequestURI().endsWith("accept")) {
             bookService.update(Book.builder()
+                    .setId(bookId)
                     .setName(name)
                     .setAttribute(attribute)
                     .setAuthors(Arrays.asList(authors))
                     .build());
+            return "redirect:/admin/edit-books";
         }
-        return "redirect:/admin/edit-books";
+        if (request.getRequestURI().endsWith("delete")) {
+            bookService.delete(bookId);
+            return "redirect:/admin/edit-books";
+        }
+        Optional<Book> optionalBook = bookService.findById(bookId);
+        optionalBook.ifPresent(book -> request.setAttribute("book", optionalBook.get()));
+        return "/WEB-INF/admin/editbook.jsp";
     }
 }

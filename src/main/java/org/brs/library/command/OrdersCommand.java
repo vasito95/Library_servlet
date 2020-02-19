@@ -1,8 +1,8 @@
 package org.brs.library.command;
 
+import org.brs.library.helper.ValidationHelper;
 import org.brs.library.service.BookService;
 import org.brs.library.service.OrderService;
-import org.brs.library.utility.ValidationHelper;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -1,10 +1,10 @@
 package org.brs.library.command;
 
+import org.brs.library.helper.ValidationHelper;
 import org.brs.library.model.entity.Book;
 import org.brs.library.model.entity.Order;
 import org.brs.library.service.BookService;
 import org.brs.library.service.OrderService;
-import org.brs.library.utility.ValidationHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -25,7 +25,8 @@ public class OrderBooksCommand implements Command {
 
         final String name = request.getParameter("name");
         final String date = request.getParameter("dateTo");
-
+        request.setAttribute("minDate", LocalDate.now());
+        request.setAttribute("maxDate", LocalDate.now().plusDays(30));
         if (ValidationHelper.isStringsNullOrEmpty(name, date)) {
             return "/WEB-INF/user/orderbook.jsp";
         }

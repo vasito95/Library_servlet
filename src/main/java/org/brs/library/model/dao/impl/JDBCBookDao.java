@@ -33,7 +33,7 @@ public class JDBCBookDao implements BookDao {
     public static final String SELECT_ALL_BY_AUTHOR_LIKE = "select * FROM book WHERE id IN (SELECT book_id FROM author WHERE author.authors like ?)";
     public static final String DELETE_BOOK = "DELETE FROM book WHERE id=?";
     public static final String SELECT_BY_ID = "SELECT * FROM book WHERE id=?";
-    public static final String UPDATE_BOOK = "UPDATE book SET name=?, attribute=?";
+    public static final String UPDATE_BOOK = "UPDATE book SET name=?, attribute=? where id=?";
     public static final String DELETE_AUTHORS = "DELETE FROM author WHERE book_id=?";
 
     @Override
@@ -41,18 +41,27 @@ public class JDBCBookDao implements BookDao {
         final long id;
         try (Connection connection = ConnectionPool.getConnection()) {
             try (PreparedStatement st = connection.prepareStatement(INSERT_BOOK, Statement.RETURN_GENERATED_KEYS)) {
+                LOG.error("1");
                 connection.setAutoCommit(false);
+                LOG.error("2");
                 st.setString(1, entity.getName());
                 st.setBoolean(2, entity.getIsInUse());
                 st.setString(3, entity.getAttribute());
                 st.executeUpdate();
+                LOG.error("3");
                 ResultSet rs = st.getGeneratedKeys();
+                LOG.error("3.1");
                 if (rs.next()) {
+                    LOG.error("3.2");
                     id = rs.getLong(1);
                     for (String author : entity.getAuthors()) {
-                        insertAuthors(id, author);
+                        LOG.error(entity.getAuthors());
+                        LOG.error("3.4");
+                        insertAuthors(connection, id, author);
+                        LOG.error("3.5");
                     }
                 }
+                LOG.error("4");
                 connection.commit();
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
@@ -132,7 +141,7 @@ public class JDBCBookDao implements BookDao {
     public List<Book> findAllBooksWithReaders() {
         List<Book> resultList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(SELECT_ALL_BOOKS_WITH_READERS)) {
+             PreparedStatement ps = connection.prepareStatement(SELECT_ALL_BOOKS_WITH_READERS)) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Book book = extractWithUserFromResultSet(rs);
@@ -214,15 +223,16 @@ public class JDBCBookDao implements BookDao {
 
     @Override
     public void update(Book entity) {
-        try(Connection connection = ConnectionPool.getConnection()){
+        try (Connection connection = ConnectionPool.getConnection()) {
             try (PreparedStatement st = connection.prepareStatement(UPDATE_BOOK)) {
                 connection.setAutoCommit(false);
                 st.setString(1, entity.getName());
                 st.setString(2, entity.getAttribute());
+                st.setLong(3, entity.getId());
                 st.executeUpdate();
-                deleteAuthors(entity.getId());
+                deleteAuthors(connection, entity.getId());
                 for (String author : entity.getAuthors()) {
-                    insertAuthors(entity.getId(), author);
+                    insertAuthors( connection, entity.getId(), author);
                 }
                 connection.commit();
                 connection.setAutoCommit(true);
@@ -231,7 +241,7 @@ public class JDBCBookDao implements BookDao {
                 connection.setAutoCommit(true);
                 LOG.error(e.getMessage());
             }
-        } catch(SQLException e){
+        } catch (SQLException e) {
             LOG.error(e.getMessage());
         }
     }
@@ -239,8 +249,9 @@ public class JDBCBookDao implements BookDao {
     @Override
     public void delete(Long id) {
         try (Connection connection = ConnectionPool.getConnection();
-                PreparedStatement st = connection.prepareStatement(DELETE_BOOK)) {
+             PreparedStatement st = connection.prepareStatement(DELETE_BOOK)) {
             st.setLong(1, id);
+            deleteAuthors(connection,id);
             st.executeUpdate();
         } catch (SQLException e) {
             LOG.error(e.getMessage());
@@ -251,29 +262,25 @@ public class JDBCBookDao implements BookDao {
     public void close() throws Exception {
     }
 
-    private void deleteAuthors(Long id) {
-        try (Connection connection = ConnectionPool.getConnection();
-                PreparedStatement st = connection.prepareStatement(DELETE_AUTHORS)) {
+    private void deleteAuthors(Connection connection, Long id) throws SQLException {
+        try (PreparedStatement st = connection.prepareStatement(DELETE_AUTHORS)) {
             st.setLong(1, id);
-            st.executeUpdate();
-            } catch (SQLException e) {
-            LOG.error(e.getMessage());
+            st.execute();
         }
     }
 
-    private void insertAuthors(Long id, String author) throws SQLException {
-        try (Connection connection = ConnectionPool.getConnection();
-                PreparedStatement st = connection.prepareStatement(INSERT_AUTHOR_BY_BOOK_ID)) {
+    private void insertAuthors(Connection connection, Long id, String author) throws SQLException {
+        try (PreparedStatement st = connection.prepareStatement(INSERT_AUTHOR_BY_BOOK_ID)) {
             st.setLong(1, id);
             st.setString(2, author);
-            st.executeUpdate();
+            st.execute();
         }
     }
 
     private List<String> findAuthorsById(Long id) {
         List<String> resultList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(SELECT_AUTHORS_BY_BOOK_ID)) {
+             PreparedStatement ps = connection.prepareStatement(SELECT_AUTHORS_BY_BOOK_ID)) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -289,7 +296,7 @@ public class JDBCBookDao implements BookDao {
     private List<Book> getBooks(String attribute, String query) {
         List<Book> resultList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection();
-                PreparedStatement ps = connection.prepareStatement(query)) {
+             PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, attribute);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

@@ -1,0 +1,14 @@
+a{
+    white-space: nowrap;!important;
+}
+.author-input:hover{
+    cursor: pointer;
+}
+.book-form{
+    width: 350px;
+    margin: auto;
+}
+.justify-around{
+    display: flex;
+    justify-content: space-around;
+}

@@ -1,11 +1,14 @@
 package org.brs.library.command;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.brs.library.helper.ValidationHelper;
 import org.brs.library.service.BookService;
-import org.brs.library.utility.ValidationHelper;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class AllBooksCommand implements Command {
+    private static Logger LOG = LogManager.getLogger(AllBooksCommand.class);
     private BookService bookService;
 
     public AllBooksCommand(BookService bookService) {
@@ -17,6 +20,8 @@ public class AllBooksCommand implements Command {
 
         final String search = request.getParameter("search");
         final String field = request.getParameter("field");
+        LOG.error(field);
+        LOG.error(search);
 
         if (ValidationHelper.isNull(search, field) || search.equals("")) {
             request.setAttribute("books", bookService.findAll());
