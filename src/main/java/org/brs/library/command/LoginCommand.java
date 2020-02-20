@@ -20,7 +20,7 @@ public class LoginCommand implements Command {
         final String email = request.getParameter("email");
         final String password = request.getParameter("password");
 
-        if (ValidationHelper.isNull(email, password) || email.equals("") || password.equals("")) {
+        if (ValidationHelper.isStringsNoTNullOrEmpty(email,password)) {
             return "/login.jsp";
         }
 

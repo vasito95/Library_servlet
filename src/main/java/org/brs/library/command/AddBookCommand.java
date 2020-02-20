@@ -22,7 +22,7 @@ public class AddBookCommand implements Command {
         final String[] authors = request.getParameterValues("author");
         final String attribute = request.getParameter("attribute");
 
-        if (authors == null || ValidationHelper.isStringsNullOrEmpty(name, attribute)) {
+        if (authors == null || ValidationHelper.isNull(name, attribute)) {
             request.setAttribute("books", bookService.findAll());
             return "/WEB-INF/admin/addbook.jsp";
         }

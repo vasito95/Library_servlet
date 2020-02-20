@@ -53,8 +53,8 @@
                     <tr>
                         <td>${book.id}</td>
                         <td>${book.name}</td>
-                        <td>${book.authors}</td>
-                        <td>${book.attribute}</td>
+                        <td class="max-width-250">${book.authors}</td>
+                        <td class="max-width-250">${book.attribute}</td>
                         <td>${book.isInUse}</td>
                     </tr>
                 </c:forEach>

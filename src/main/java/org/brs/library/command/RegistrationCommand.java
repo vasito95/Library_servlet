@@ -7,7 +7,6 @@ import org.brs.library.model.entity.User;
 import org.brs.library.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 
 
 public class RegistrationCommand implements Command {
@@ -25,7 +24,7 @@ public class RegistrationCommand implements Command {
         final String email = request.getParameter("email");
         final String pass = request.getParameter("password");
 
-        if (ValidationHelper.isStringsNullOrEmpty(name, phone, email, pass)) {
+        if (ValidationHelper.isNull(name, phone, email, pass)) {
             return "/registration.jsp";
         }
         User user = User.builder()
@@ -33,13 +32,13 @@ public class RegistrationCommand implements Command {
                 .setEmail(email)
                 .setPassword(pass)
                 .setIsActive(true)
-                .setRoles(Collections.singleton(Role.ADMIN))
+                .setRole(Role.ADMIN)
                 .setPhoneNumber(phone)
                 .build();
         try {
             userService.createUser(user);
         } catch (OperationFailedException ex) {
-            request.setAttribute("error", "User with thi email already exist");
+            request.setAttribute("error", "User with this email already exist");
             return "/registration.jsp";
         }
         return "redirect:/login";

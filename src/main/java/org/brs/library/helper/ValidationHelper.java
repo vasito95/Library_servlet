@@ -10,13 +10,10 @@ public class ValidationHelper {
     }
 
     public static boolean isNull(Object... objects) {
-        return Arrays.stream(objects).noneMatch(Objects::nonNull);
+        return Arrays.stream(objects).allMatch(Objects::isNull);
     }
 
-    public static boolean isStringValid(String s) {
-        return s != null && !s.equals("") && !s.equals("null");
-    }
-    public static boolean isStringsNullOrEmpty(String... strings) {
+    public static boolean isStringsNoTNullOrEmpty(String... strings) {
         return Arrays.stream(strings).anyMatch(s -> s == null || s.equals(""));
     }
 }

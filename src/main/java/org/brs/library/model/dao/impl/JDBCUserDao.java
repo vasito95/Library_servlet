@@ -57,40 +57,33 @@ public class JDBCUserDao implements UserDao {
     @Override
     public void create(User entity) throws OperationFailedException {
         long id = -1L;
+
         try (Connection connection = ConnectionPool.getConnection()) {
-            try (PreparedStatement st = connection.prepareStatement(INSERT_NEW_USER, Statement.RETURN_GENERATED_KEYS)) {
+            try (PreparedStatement ps = connection.prepareStatement(INSERT_NEW_USER, Statement.RETURN_GENERATED_KEYS);
+                 PreparedStatement psRole = connection.prepareStatement(INSERT_USER_ROLE)) {
                 connection.setAutoCommit(false);
-                st.setString(1, entity.getUsername());
-                st.setString(2, entity.getEmail());
-                st.setString(3, entity.getPhoneNumber());
-                st.setString(4, entity.getPassword());
-                st.setBoolean(5, entity.getActive());
-                st.executeUpdate();
-                ResultSet rs = st.getGeneratedKeys();
+                ps.setString(1, entity.getUsername());
+                ps.setString(2, entity.getEmail());
+                ps.setString(3, entity.getPhoneNumber());
+                ps.setString(4, entity.getPassword());
+                ps.setBoolean(5, entity.getActive());
+                ps.executeUpdate();
+                ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
                     id = rs.getLong(1);
                 }
-                setUserRole(id, entity.getRoles().iterator().next());
+                psRole.setLong(1, id);
+                psRole.setString(2, entity.getRoles().iterator().next().toString());
+                psRole.executeUpdate();
                 connection.commit();
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
                 connection.rollback();
                 connection.setAutoCommit(true);
                 throw new OperationFailedException(e);
-
             }
         } catch (SQLException e) {
             throw new OperationFailedException(e);
-        }
-
-    }
-
-    private void setUserRole(Long id, Role role) throws SQLException {
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement st = connection.prepareStatement(INSERT_USER_ROLE)) {
-            st.setLong(1, id);
-            st.setString(2, role.toString());
-            st.executeUpdate();
         }
     }
 

@@ -19,7 +19,7 @@ public class OrdersCommand implements Command {
     public String execute(HttpServletRequest request) {
         final String id = request.getParameter("orderId");
 
-        if (ValidationHelper.isStringsNullOrEmpty(id)) {
+        if (ValidationHelper.nonNull(id)) {
             request.setAttribute("orders", orderService.findAll());
             return "/WEB-INF/admin/orders.jsp";
         }

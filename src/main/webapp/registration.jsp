@@ -35,9 +35,9 @@
                 <p class="text-xs-center text-muted">
                     <fmt:message key="login.label.register" bundle="${msg}"/>
                 </p>
-                <c:if test="${not empty requestScope.message}">
+                <c:if test="${not empty requestScope.error}">
                         <span class="text-danger">
-                    <fmt:message key="${requestScope.message}" bundle="${msg}"/>
+                             <fmt:message key="${requestScope.error}" bundle="${msg}"/>
                         </span>
                 </c:if>
                 <form action="${pageContext.request.contextPath}/registration" method="post">

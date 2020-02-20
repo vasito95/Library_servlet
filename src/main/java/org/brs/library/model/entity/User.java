@@ -10,19 +10,19 @@ public class User {
     private String phoneNumber;
     private String password;
     private Boolean isActive;
-    private Set<Role> roles;
+    private Role role;
     private Set<Book> books;
 
     public User() {
     }
 
-    public User(String username, String email, String phoneNumber, String password, Boolean isActive, Set<Role> roles, Set<Book> books) {
+    public User(String username, String email, String phoneNumber, String password, Boolean isActive, Role role, Set<Book> books) {
         this.username = username;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.isActive = isActive;
-        this.roles = roles;
+        this.role = role;
         this.books = books;
     }
 
@@ -36,7 +36,7 @@ public class User {
         private String phoneNumber;
         private String password;
         private Boolean isActive;
-        private Set<Role> roles;
+        private Role role;
         private Set<Book> books;
 
         public UserBuilder setUsername(String username) {
@@ -64,8 +64,8 @@ public class User {
             return this;
         }
 
-        public UserBuilder setRoles(Set<Role> roles) {
-            this.roles = roles;
+        public UserBuilder setRole(Role role) {
+            this.role = role;
             return this;
         }
 
@@ -75,7 +75,7 @@ public class User {
         }
 
         public User build() {
-            return new User(username, email, phoneNumber, password, isActive, roles, books);
+            return new User(username, email, phoneNumber, password, isActive, role, books);
         }
     }
 
@@ -127,12 +127,12 @@ public class User {
         isActive = active;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRoles(Role role) {
+        this.role = role;
     }
 
     public Set<Book> getBooks() {

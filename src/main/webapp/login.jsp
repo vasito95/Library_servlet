@@ -4,6 +4,12 @@
 
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="msg" scope="session"/>
+<fmt:setBundle basename="regex" var="regex" scope="session"/>
+<fmt:message key="form.invalid.email" bundle="${msg}" var="wrongEmail"/>
+<fmt:message key="form.invalid.password" bundle="${msg}" var="wrongPassword"/>
+<fmt:message key="email.regexp" bundle="${regex}" var="emailRegex"/>
+<fmt:message key="password.regexp" bundle="${regex}" var="passwordRegex"/>
+<!DOCTYPE html>
 <html lang="${sessionScope.lang}">
 <head>
     <title>Login</title>
@@ -48,7 +54,9 @@
                            class="text-muted form-control underlined"
                            id="email"
                            name="email"
-                           value="admin1@gmail.com"
+                           required
+                           pattern="${emailRegex}"
+                           title="${wrongEmail}"
                     >
                     <label for="password"><fmt:message key="input.password" bundle="${msg}"/></label>
                     <input
@@ -56,7 +64,9 @@
                             class="text-muted form-control underlined"
                             id="password"
                             name="password"
-                            value="8520"
+                            required
+                            pattern="${passwordRegex}"
+                            title="${wrongPassword}"
                     >
                     <div class="form-group">
                         <button

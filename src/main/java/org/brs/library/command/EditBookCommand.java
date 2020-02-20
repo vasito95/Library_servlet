@@ -21,7 +21,6 @@ public class EditBookCommand implements Command {
         final String[] authors = request.getParameterValues("author");
         final String attribute = request.getParameter("attribute");
         final Long bookId = Long.parseLong(request.getParameter("bookId"));
-        System.out.println(bookId);
         if (ValidationHelper.isNull(bookId)) {
             return "redirect:/admin/edit-books";
         }

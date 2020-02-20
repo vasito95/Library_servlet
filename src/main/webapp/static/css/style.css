@@ -12,3 +12,6 @@ a{
     display: flex;
     justify-content: space-around;
 }
+.max-width-250{
+    max-width: 250px;
+}

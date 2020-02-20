@@ -41,27 +41,18 @@ public class JDBCBookDao implements BookDao {
         final long id;
         try (Connection connection = ConnectionPool.getConnection()) {
             try (PreparedStatement st = connection.prepareStatement(INSERT_BOOK, Statement.RETURN_GENERATED_KEYS)) {
-                LOG.error("1");
                 connection.setAutoCommit(false);
-                LOG.error("2");
                 st.setString(1, entity.getName());
                 st.setBoolean(2, entity.getIsInUse());
                 st.setString(3, entity.getAttribute());
                 st.executeUpdate();
-                LOG.error("3");
                 ResultSet rs = st.getGeneratedKeys();
-                LOG.error("3.1");
                 if (rs.next()) {
-                    LOG.error("3.2");
                     id = rs.getLong(1);
                     for (String author : entity.getAuthors()) {
-                        LOG.error(entity.getAuthors());
-                        LOG.error("3.4");
                         insertAuthors(connection, id, author);
-                        LOG.error("3.5");
                     }
                 }
-                LOG.error("4");
                 connection.commit();
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
@@ -232,7 +223,7 @@ public class JDBCBookDao implements BookDao {
                 st.executeUpdate();
                 deleteAuthors(connection, entity.getId());
                 for (String author : entity.getAuthors()) {
-                    insertAuthors( connection, entity.getId(), author);
+                    insertAuthors(connection, entity.getId(), author);
                 }
                 connection.commit();
                 connection.setAutoCommit(true);
@@ -248,13 +239,16 @@ public class JDBCBookDao implements BookDao {
 
     @Override
     public void delete(Long id) {
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement st = connection.prepareStatement(DELETE_BOOK)) {
-            st.setLong(1, id);
-            deleteAuthors(connection,id);
-            st.executeUpdate();
-        } catch (SQLException e) {
-            LOG.error(e.getMessage());
+        try (Connection connection = ConnectionPool.getConnection();) {
+            deleteAuthors(connection, id);
+            try (PreparedStatement st = connection.prepareStatement(DELETE_BOOK)) {
+                st.setLong(1, id);
+                st.executeUpdate();
+            } catch (SQLException e) {
+                LOG.error(e.getMessage());
+            }
+        } catch (SQLException ex) {
+            LOG.error(ex.getMessage());
         }
     }
 
@@ -265,7 +259,7 @@ public class JDBCBookDao implements BookDao {
     private void deleteAuthors(Connection connection, Long id) throws SQLException {
         try (PreparedStatement st = connection.prepareStatement(DELETE_AUTHORS)) {
             st.setLong(1, id);
-            st.execute();
+            st.executeUpdate();
         }
     }
 
@@ -328,7 +322,10 @@ public class JDBCBookDao implements BookDao {
         Book result = new Book();
         result.setId(rs.getLong("id"));
         result.setName(rs.getString("name"));
-        result.setUser(User.builder().setUsername(rs.getString("username")).build());
+        result.setUser(User.builder()
+                .setUsername(rs.getString("username"))
+                .setPhoneNumber(rs.getString("phone_number"))
+                .build());
         if (rs.getString("in_use_by") != null) {
             result.setInUseBy(LocalDate.parse(rs.getString("in_use_by")));
         }

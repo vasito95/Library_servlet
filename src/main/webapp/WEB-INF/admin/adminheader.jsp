@@ -1,6 +1,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <header class="header">
+    <div class="header-block header-block-search">
+        ${sessionScope.userName}
+    </div>
     <div class="header-block header-block-nav">
         <ul class="nav-profile">
             <li class="profile">

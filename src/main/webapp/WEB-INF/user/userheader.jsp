@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <header class="header">
+    <div class="header-block header-block-search">
+        ${sessionScope.userName}
+    </div>
     <div class="header-block header-block-nav">
         <ul class="nav-profile">
             <li class="profile">
@@ -12,11 +15,13 @@
             </li>
             <c:if test="${sessionScope.role eq 'ADMIN'}">
                 <li class="profile">
-                    <a class="border" href="${pageContext.request.contextPath}/admin"><fmt:message key="system.menu.admin" bundle="${msg}"/></a>
+                    <a class="border" href="${pageContext.request.contextPath}/admin"><fmt:message
+                            key="system.menu.admin" bundle="${msg}"/></a>
                 </li>
             </c:if>
             <li class="profile">
-                <a class="border" href="${pageContext.request.contextPath}/user/logout"><fmt:message key="system.button.logout" bundle="${msg}"/></a>
+                <a class="border" href="${pageContext.request.contextPath}/user/logout"><fmt:message
+                        key="system.button.logout" bundle="${msg}"/></a>
             </li>
 
         </ul>

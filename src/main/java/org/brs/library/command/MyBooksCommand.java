@@ -15,7 +15,7 @@ public class MyBooksCommand implements Command {
     public String execute(HttpServletRequest request) {
         final String bookId = request.getParameter("bookId");
 
-        if(!ValidationHelper.isStringsNullOrEmpty(bookId)){
+        if(ValidationHelper.nonNull(bookId)){
             this.bookService.returnBook(Long.parseLong(bookId),(Long) request.getSession().getAttribute("userId"));
         }
         request.setAttribute("books", bookService.findAllByUserId((Long) request.getSession().getAttribute("userId")));

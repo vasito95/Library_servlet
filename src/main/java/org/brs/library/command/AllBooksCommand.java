@@ -20,8 +20,6 @@ public class AllBooksCommand implements Command {
 
         final String search = request.getParameter("search");
         final String field = request.getParameter("field");
-        LOG.error(field);
-        LOG.error(search);
 
         if (ValidationHelper.isNull(search, field) || search.equals("")) {
             request.setAttribute("books", bookService.findAll());

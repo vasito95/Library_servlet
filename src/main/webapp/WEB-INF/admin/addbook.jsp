@@ -20,14 +20,29 @@
         <article class="content dashboard-page">
             <form class="book-form" action="${pageContext.request.contextPath}/admin/add-book" method="post">
                 <h5 class="form-control-label"><fmt:message key="system.book.name" bundle="${msg}"/></h5>
-                <input class="form-control" type="text" name="name">
+                <input class="form-control"
+                       type="text"
+                       name="name"
+                       required
+                       title="Username should only contain lowercase letters. e.g. john"
+                >
+
                 <h5 class="form-control-label"><fmt:message key="system.book.authors" bundle="${msg}"/></h5>
                 <div class="author-box">
-                    <input class="form-control m-b-1" id="author" type="text" name="author">
+                    <input class="form-control m-b-1"
+                           id="author"
+                           type="text"
+                           name="author"
+                           required
+                    >
                 </div>
                 <h2 class="author-input text-center">+</h2>
                 <h5 class="form-control-label"><fmt:message key="system.book.attribute" bundle="${msg}"/></h5>
-                <input class="form-control m-b-1" type="text" name="attribute">
+                <input class="form-control m-b-1"
+                       type="text"
+                       name="attribute"
+                       required
+                >
                 <button class="btn btn-success-outline p-l-3 p-r-3" type="submit" value="Add">
                     <fmt:message key="system.button.add" bundle="${msg}"/>
                 </button>
@@ -46,8 +61,8 @@
                     <tr>
                         <td>${book.id}</td>
                         <td>${book.name}</td>
-                        <td>${book.authors}</td>
-                        <td>${book.attribute}</td>
+                        <td class="max-width-250">${book.authors}</td>
+                        <td class="max-width-250">${book.attribute}</td>
                     </tr>
                 </c:forEach>
                 </tbody>

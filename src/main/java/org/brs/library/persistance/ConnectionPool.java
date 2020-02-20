@@ -13,7 +13,7 @@ public class ConnectionPool {
 
     static {
         PoolProperties properties = new PoolProperties();
-        properties.setUrl("jdbc:mysql://localhost:3306/library");
+        properties.setUrl("jdbc:mysql://localhost:3306/library_s");
         properties.setDriverClassName("com.mysql.cj.jdbc.Driver");
         properties.setUsername("root");
         properties.setPassword("root");

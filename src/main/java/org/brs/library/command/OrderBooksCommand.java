@@ -27,7 +27,7 @@ public class OrderBooksCommand implements Command {
         final String date = request.getParameter("dateTo");
         request.setAttribute("minDate", LocalDate.now());
         request.setAttribute("maxDate", LocalDate.now().plusDays(30));
-        if (ValidationHelper.isStringsNullOrEmpty(name, date)) {
+        if (ValidationHelper.isNull(name, date)) {
             return "/WEB-INF/user/orderbook.jsp";
         }
 

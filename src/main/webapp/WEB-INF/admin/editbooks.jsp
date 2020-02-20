@@ -30,8 +30,8 @@
                     <tr>
                         <th>${book.id}</th>
                         <td>${book.name}</td>
-                        <td>${book.authors}</td>
-                        <td>${book.attribute}</td>
+                        <td class="max-width-250">${book.authors}</td>
+                        <td class="max-width-250">${book.attribute}</td>
                         <td class="justify-around">
                             <form action="${pageContext.request.contextPath}/admin/edit-book" method="post">
                                 <input type="hidden" name="bookId" value="${book.id}">

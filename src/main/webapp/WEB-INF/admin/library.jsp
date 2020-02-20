@@ -25,6 +25,7 @@
                     <th scope="col"><fmt:message key="system.book.name" bundle="${msg}"/></th>
                     <th scope="col"><fmt:message key="system.book.inuseby" bundle="${msg}"/></th>
                     <th scope="col"><fmt:message key="input.username" bundle="${msg}"/></th>
+                    <th scope="col"><fmt:message key="system.list.phone.number" bundle="${msg}"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -34,6 +35,7 @@
                         <td>${book.name}</td>
                         <td>${book.inUseBy}</td>
                         <td>${book.user.username}</td>
+                        <td><a href="tel:${book.user.phoneNumber}"></a></td>
                     </tr>
                 </c:forEach>
                 </tbody>
