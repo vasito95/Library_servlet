@@ -2,7 +2,6 @@ package org.brs.library.filter;
 
 import javax.servlet.*;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class EncodingFilter implements Filter {
@@ -16,13 +15,9 @@ public class EncodingFilter implements Filter {
         servletRequest.setCharacterEncoding("UTF-8");
         servletResponse.setContentType("text/html");
         servletResponse.setCharacterEncoding("UTF-8");
-
-        Locale loc = servletRequest.getLocale();
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", loc);
-        servletRequest.setAttribute("resource",resourceBundle);
-
-
-        filterChain.doFilter(servletRequest,servletResponse);
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("messages", servletRequest.getLocale());
+        servletRequest.setAttribute("resource", resourceBundle);
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

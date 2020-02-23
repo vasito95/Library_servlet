@@ -20,7 +20,7 @@ public class AuthFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        if (SecurityHelper.hasAnyPermission(req)){
+        if (SecurityHelper.hasAnyPermission(req)) {
             res.sendRedirect("/app/login");
             return;
         }
@@ -28,5 +28,6 @@ public class AuthFilter implements Filter {
     }
 
     @Override
-    public void destroy() { }
+    public void destroy() {
+    }
 }

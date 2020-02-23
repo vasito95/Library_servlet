@@ -13,6 +13,10 @@ import java.io.IOException;
 public class LoginRegFilter implements Filter {
 
     @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
     public void doFilter(ServletRequest request,
                          ServletResponse response,
                          FilterChain filterChain) throws IOException, ServletException {
@@ -21,29 +25,23 @@ public class LoginRegFilter implements Filter {
         HttpServletResponse res = (HttpServletResponse) response;
 
         HttpSession session = req.getSession();
-        if(session != null &&
+        if (session != null &&
                 session.getAttribute("role") != null &&
-                session.getAttribute("role") != "")
-        {
+                session.getAttribute("role") != "") {
             Role role = (Role) session.getAttribute("role");
-            if(role.equals(Role.ADMIN)){
+            if (role.equals(Role.ADMIN)) {
                 res.sendRedirect("/app/admin");
                 return;
             }
-            if(role.equals(Role.USER)){
+            if (role.equals(Role.USER)) {
                 res.sendRedirect("/app/user");
                 return;
             }
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
-    }
     @Override
     public void destroy() {
-
     }
 }

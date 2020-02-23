@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface OrderDao extends GenericDao<Order> {
     List<Order> findAll();
     Optional<Order> findById(Long id);
+    void delete(Long id);
 }

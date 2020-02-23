@@ -19,7 +19,7 @@ public class OrdersCommand implements Command {
     public String execute(HttpServletRequest request) {
         final String id = request.getParameter("orderId");
 
-        if (ValidationHelper.nonNull(id)) {
+        if (ValidationHelper.isNull(id)) {
             request.setAttribute("orders", orderService.findAll());
             return "/WEB-INF/admin/orders.jsp";
         }
@@ -27,7 +27,6 @@ public class OrdersCommand implements Command {
 
         processOrder(request, orderId);
         return "redirect:/admin/orders";
-
     }
 
     private void processOrder(HttpServletRequest request, Long orderId) {

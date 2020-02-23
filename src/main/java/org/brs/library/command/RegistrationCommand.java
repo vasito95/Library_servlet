@@ -8,7 +8,6 @@ import org.brs.library.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 public class RegistrationCommand implements Command {
 
     private UserService userService;
@@ -32,7 +31,7 @@ public class RegistrationCommand implements Command {
                 .setEmail(email)
                 .setPassword(pass)
                 .setIsActive(true)
-                .setRole(Role.ADMIN)
+                .setRole(Role.USER)
                 .setPhoneNumber(phone)
                 .build();
         try {

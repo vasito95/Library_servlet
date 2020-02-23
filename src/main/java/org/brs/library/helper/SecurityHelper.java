@@ -16,7 +16,7 @@ public class SecurityHelper {
                 (session == null ||
                         session.getAttribute("role") == null ||
                         session.getAttribute("role").equals(""))) ||
-                (path.contains("admin") &&
+                        (path.contains("admin") &&
                         session.getAttribute("role").equals(Role.USER));
     }
 }

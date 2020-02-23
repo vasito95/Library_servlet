@@ -9,41 +9,24 @@ import org.brs.library.model.entity.User;
 import org.brs.library.persistance.ConnectionPool;
 
 import java.sql.*;
-import java.util.Collections;
 import java.util.Optional;
 
 public class JDBCUserDao implements UserDao {
 
     private static Logger LOG = LogManager.getLogger(JDBCUserDao.class);
 
-    public static final String INSERT_NEW_USER = "INSERT INTO user (username, email, phone_number, password, is_active) VALUES (?, ?, ?, ?, ?)";
+    public static final String INSERT_NEW_USER = "INSERT INTO user (username, email, phone_number, password, is_active, role) VALUES (?, ?, ?, ?, ?, ?)";
     public static final String INSERT_USER_ROLE = "INSERT INTO user_role (user_id, roles) VALUES (?, ?)";
-    public static final String SELECT_ALL_USERS_WITH_ROLES = "SELECT * from user left join user_role on user.id=user_role.user_id where " +
+    public static final String SELECT_ALL_USERS_WITH_ROLES = "SELECT * from user where " +
             "user.email=? and user.password=?";
-    public static final String DELETE_USER_BY_ID = " delete from users where id=?";
-    public static final String SELECT_BY_NAME = "SELECT * from library.user left join library.user_role on user.id=user_role.user_id where user.username=?";
+    public static final String DELETE_USER_BY_ID = " delete from user where id=?";
+    public static final String SELECT_BY_NAME = "SELECT * from user left join library.user_role on user.id=user_role.user_id where user.username=?";
 
     public Optional<User> findByEmailAndPassword(String email, String password) {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL_USERS_WITH_ROLES)) {
             statement.setString(1, email);
             statement.setString(2, password);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(extractFromResultSet(resultSet));
-            }
-        } catch (SQLException e) {
-            LOG.error(e.getMessage());
-        }
-
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<User> findByName(String name) {
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_BY_NAME)) {
-            statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(extractFromResultSet(resultSet));
@@ -59,22 +42,19 @@ public class JDBCUserDao implements UserDao {
         long id = -1L;
 
         try (Connection connection = ConnectionPool.getConnection()) {
-            try (PreparedStatement ps = connection.prepareStatement(INSERT_NEW_USER, Statement.RETURN_GENERATED_KEYS);
-                 PreparedStatement psRole = connection.prepareStatement(INSERT_USER_ROLE)) {
+            try (PreparedStatement ps = connection.prepareStatement(INSERT_NEW_USER, Statement.RETURN_GENERATED_KEYS)) {
                 connection.setAutoCommit(false);
                 ps.setString(1, entity.getUsername());
                 ps.setString(2, entity.getEmail());
                 ps.setString(3, entity.getPhoneNumber());
                 ps.setString(4, entity.getPassword());
                 ps.setBoolean(5, entity.getActive());
+                ps.setString(6, entity.getRole().name());
                 ps.executeUpdate();
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
                     id = rs.getLong(1);
                 }
-                psRole.setLong(1, id);
-                psRole.setString(2, entity.getRoles().iterator().next().toString());
-                psRole.executeUpdate();
                 connection.commit();
                 connection.setAutoCommit(true);
             } catch (SQLException e) {
@@ -92,19 +72,8 @@ public class JDBCUserDao implements UserDao {
         result.setId(rs.getLong("id"));
         result.setUsername(rs.getString("username"));
         result.setEmail(rs.getString("email"));
-        result.setRoles(Collections.singleton(Role.valueOf(rs.getString("roles"))));
+        result.setRole(Role.valueOf(rs.getString("role")));
         return result;
-    }
-
-    @Override
-    public void delete(Long id) {
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement st = connection.prepareStatement(DELETE_USER_BY_ID)) {
-            st.setLong(1, id);
-            st.execute();
-        } catch (SQLException e) {
-            LOG.error(e.getMessage());
-        }
     }
 
     @Override

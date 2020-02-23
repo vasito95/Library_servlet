@@ -1,12 +1,12 @@
 package org.brs.library.command;
 
+import org.brs.library.exception.UserNotFoundException;
 import org.brs.library.helper.ValidationHelper;
 import org.brs.library.model.entity.User;
 import org.brs.library.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 public class LoginCommand implements Command {
     private UserService userService;
@@ -23,13 +23,11 @@ public class LoginCommand implements Command {
         if (ValidationHelper.isStringsNoTNullOrEmpty(email,password)) {
             return "/login.jsp";
         }
-
-        Optional<User> userOptional = userService.findUserByEmailAndPassword(email.trim(), password);
         User user;
-
-        if (userOptional.isPresent()) {
-            user = userOptional.get();
-        } else {
+        try {
+            user = userService.findUserByEmailAndPassword(email.trim(), password);
+        } catch (UserNotFoundException e){
+            request.setAttribute("error", "User not found");
             return "/login.jsp";
         }
 
@@ -37,7 +35,7 @@ public class LoginCommand implements Command {
         session.setAttribute("userEmail", user.getEmail());
         session.setAttribute("userName", user.getUsername());
         session.setAttribute("userId", user.getId());
-        session.setAttribute("role", user.getRoles().iterator().next());
+        session.setAttribute("role", user.getRole());
         return "redirect:/user";
     }
 }
