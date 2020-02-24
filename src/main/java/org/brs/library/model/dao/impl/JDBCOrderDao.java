@@ -93,7 +93,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     public long getNumberOfOrders() {
-        Long numberOfOrders = 0L;
+        long numberOfOrders = 0L;
         try (Connection connection = ConnectionPool.getConnection();
              Statement st = connection.createStatement()) {
             ResultSet rs = st.executeQuery(GET_ORDERS_COUNT);
@@ -107,7 +107,7 @@ public class JDBCOrderDao implements OrderDao {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
 
     }
 }
