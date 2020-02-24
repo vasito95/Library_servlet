@@ -16,10 +16,11 @@ public class JDBCOrderDao implements OrderDao {
 
     private static Logger LOG = LogManager.getLogger(JDBCOrderDao.class);
 
-    public static final String INSERT_ORDER = "INSERT INTO book_order (book_id, book_name, date_to, user_name, usr_id) VALUES (?, ?, ?, ?, ?)";
+    public static final String INSERT_ORDER = "INSERT INTO book_order (book_id, book_name, date_to, user_name, user_id) VALUES (?, ?, ?, ?, ?)";
     public static final String DELETE_ALL_ORDERS = "DELETE FROM book_order where id=?";
     public static final String SELECT_ORDER_BY_ID = "SELECT * FROM book_order WHERE id=?";
-    public static final String SELECT_ALL_ORDERS = "SELECT * FROM book_order";
+    public static final String SELECT_ALL_ORDERS = "SELECT * FROM book_order limit ?,?";
+    public static final String GET_ORDERS_COUNT = "SELECT COUNT(*) as numberOfOrders FROM book_order";
 
     @Override
     public void create(Order entity) {
@@ -36,10 +37,12 @@ public class JDBCOrderDao implements OrderDao {
         }
     }
 
-    public List<Order> findAll() {
+    public List<Order> findAll(long numberOfItems, long offset) {
         List<Order> resultList = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(SELECT_ALL_ORDERS)) {
+            ps.setLong(1, offset);
+            ps.setLong(2, numberOfItems);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Order order = extractFromResultSet(rs);
@@ -69,7 +72,7 @@ public class JDBCOrderDao implements OrderDao {
         result.setBookName(rs.getString("book_name"));
         result.setDateTo(LocalDate.parse(rs.getString("date_to")));
         result.setUserName(rs.getString("user_name"));
-        result.setUserId(rs.getLong("usr_id"));
+        result.setUserId(rs.getLong("user_id"));
         return result;
     }
 
@@ -87,6 +90,20 @@ public class JDBCOrderDao implements OrderDao {
             LOG.error(e.getMessage());
         }
         return order;
+    }
+
+    public long getNumberOfOrders() {
+        Long numberOfOrders = 0L;
+        try (Connection connection = ConnectionPool.getConnection();
+             Statement st = connection.createStatement()) {
+            ResultSet rs = st.executeQuery(GET_ORDERS_COUNT);
+            while (rs.next()) {
+                numberOfOrders = Long.parseLong(rs.getString("numberOfOrders"));
+            }
+        } catch (SQLException e) {
+            LOG.error(e.getMessage());
+        }
+        return numberOfOrders;
     }
 
     @Override

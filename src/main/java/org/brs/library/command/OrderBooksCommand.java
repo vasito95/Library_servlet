@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public class OrderBooksCommand implements Command {
 
+    public static final int DAYS_TO_ADD = 30;
     private OrderService orderService;
     private BookService bookService;
 
@@ -26,8 +27,13 @@ public class OrderBooksCommand implements Command {
         final String name = request.getParameter("name");
         final String date = request.getParameter("dateTo");
         request.setAttribute("minDate", LocalDate.now());
-        request.setAttribute("maxDate", LocalDate.now().plusDays(30));
+        request.setAttribute("maxDate", LocalDate.now().plusDays(DAYS_TO_ADD));
         if (ValidationHelper.isNull(name, date)) {
+            return "/WEB-INF/user/orderbook.jsp";
+        }
+        LocalDate dateParsed;
+        if (date.equals("") || (dateParsed = LocalDate.parse(date)).isBefore(LocalDate.now()) || dateParsed.isAfter(LocalDate.now().plusDays(30))) {
+            request.setAttribute("message", "Date is not correct");
             return "/WEB-INF/user/orderbook.jsp";
         }
 
@@ -36,7 +42,7 @@ public class OrderBooksCommand implements Command {
             this.orderService.placeOrder(Order.builder()
                     .setBookId(book.get().getId())
                     .setBookName(name)
-                    .setDateTo(LocalDate.parse(date))
+                    .setDateTo(dateParsed)
                     .setUserName((String) request.getSession().getAttribute("userName"))
                     .setUserId((Long) request.getSession().getAttribute("userId"))
                     .build());

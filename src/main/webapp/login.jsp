@@ -41,9 +41,9 @@
                 <p class="text-xs-center text-muted"><fmt:message key="login.label.signin" bundle="${msg}"/></p>
                 <div class="container">
                     <div class="row text-center">
-                        <c:if test="${not empty requestScope.message}">
+                        <c:if test="${not empty requestScope.error}">
                         <span class="text-danger">
-                                ${requestScope.message}
+                                ${requestScope.error}
                         </span>
                         </c:if>
                     </div>

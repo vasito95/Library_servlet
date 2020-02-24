@@ -26,6 +26,10 @@ public class RegistrationCommand implements Command {
         if (ValidationHelper.isNull(name, phone, email, pass)) {
             return "/registration.jsp";
         }
+        if (ValidationHelper.validateRegistrationForm(name, phone, email, pass)) {
+            request.setAttribute("error", "error.user.exist");
+            return "/registration.jsp";
+        }
         User user = User.builder()
                 .setUsername(name)
                 .setEmail(email)
@@ -37,7 +41,7 @@ public class RegistrationCommand implements Command {
         try {
             userService.createUser(user);
         } catch (OperationFailedException ex) {
-            request.setAttribute("error", "User with this email already exist");
+            request.setAttribute("error", "error.user.exist");
             return "/registration.jsp";
         }
         return "redirect:/login";

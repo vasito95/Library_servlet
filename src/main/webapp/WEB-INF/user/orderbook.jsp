@@ -26,11 +26,12 @@
 
             <div class="center-block">
                 <form action="${pageContext.request.contextPath}/user/order-book" method="POST">
-                    <input class="form-control-sm" type="text" name="name"/>
+                    <input class="form-control-sm" required type="text" name="name"/>
                     <label for="dateTo">
                         <fmt:message key="system.date.from" bundle="${msg}"/>
                     </label>
-                    <input id="dateTo" type="date" min="${minDate}" max="${maxDate}" name="dateTo">
+                    <input id="dateTo" required type="date" min="${requestScope.minDate}" max="${requestScope.maxDate}"
+                           name="dateTo">
 
                     <button type="submit" class="btn btn-success">
                         <fmt:message key="system.place.order" bundle="${msg}"/>

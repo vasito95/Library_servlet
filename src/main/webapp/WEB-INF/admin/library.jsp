@@ -35,7 +35,7 @@
                         <td>${book.name}</td>
                         <td>${book.inUseBy}</td>
                         <td>${book.user.username}</td>
-                        <td><a href="tel:${book.user.phoneNumber}"></a></td>
+                        <td><a href="tel:${book.user.phoneNumber}">${book.user.phoneNumber}</a></td>
                     </tr>
                 </c:forEach>
                 </tbody>

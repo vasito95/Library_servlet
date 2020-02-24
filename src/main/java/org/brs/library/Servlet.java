@@ -69,9 +69,9 @@ public class Servlet extends HttpServlet {
         commands.put(ADMIN_PAGE, new AdminCommand());
         commands.put(ADMIN_LIBRARY_PAGE, new LibraryCommand(bookService));
         commands.put(ADMIN_ADD_BOOK_PAGE, new AddBookCommand(bookService));
-        commands.put(ADMIN_ORDERS_PAGE, new OrdersCommand(orderService, bookService));
-        commands.put(ADMIN_ORDERS_ACCEPT_PATH, new OrdersCommand(orderService, bookService));
-        commands.put(ADMIN_ORDERS_DECLINE_PATH, new OrdersCommand(orderService, bookService));
+        commands.put(ADMIN_ORDERS_PAGE, new OrdersCommand(orderService));
+        commands.put(ADMIN_ORDERS_ACCEPT_PATH, new ProcessOrderCommand(orderService, bookService));
+        commands.put(ADMIN_ORDERS_DECLINE_PATH, new ProcessOrderCommand(orderService, bookService));
         commands.put(ADMIN_EDIT_BOOKS_PAGE, new EditBooksCommand(bookService));
         commands.put(ADMIN_EDIT_BOOK_DELETE_PATH, new EditBookCommand(bookService));
         commands.put(ADMIN_EDIT_BOOK_ACCEPT_PATH, new EditBookCommand(bookService));
@@ -84,6 +84,7 @@ public class Servlet extends HttpServlet {
         commands.put(USER_LOGOUT_PATH, new LogoutCommand());
         commands.put(LOGOUT_PATH, new LogoutCommand());
         commands.put(ERROR_PAGE, new ErrorCommand());
+        commands.put("", request -> "redirect:/login");
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

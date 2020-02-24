@@ -4,6 +4,15 @@
 
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="messages" var="msg" scope="session"/>
+<fmt:setBundle basename="regex" var="regex" scope="session"/>
+<fmt:message key="form.invalid.email" bundle="${msg}" var="wrongEmail"/>
+<fmt:message key="form.invalid.password" bundle="${msg}" var="wrongPassword"/>
+<fmt:message key="form.invalid.username.length" bundle="${msg}" var="wrongUsername"/>
+<fmt:message key="form.invalid.phone.number.digits" bundle="${msg}" var="wrongNumber"/>
+<fmt:message key="email.regexp" bundle="${regex}" var="emailRegex"/>
+<fmt:message key="username.regexp" bundle="${regex}" var="usernameRegex"/>
+<fmt:message key="password.regexp" bundle="${regex}" var="passwordRegex"/>
+<fmt:message key="phone.number.regexp" bundle="${regex}" var="phoneNumberRegex"/>
 <html lang="${sessionScope.lang}">
 <head>
     <title>Registration</title>
@@ -50,10 +59,10 @@
                                 type="text"
                                 id="username"
                                 name="username"
+                                required
+                                pattern="${usernameRegex}"
+                                title="${wrongUsername}"
                         />
-                        <span class="text-danger clearfix">
-
-                        </span>
                     </div>
                     <div>
                         <label for="email">
@@ -64,10 +73,10 @@
                                 id="email"
                                 type="text"
                                 name="email"
+                                required
+                                pattern="${emailRegex}"
+                                title="${wrongEmail}"
                         />
-                        <span class="text-danger clearfix">
-
-                        </span>
                     </div>
                     <div>
                         <label for="phone">
@@ -78,10 +87,10 @@
                                 type="text"
                                 id="phone"
                                 name="phoneNumber"
+                                required
+                                pattern="${phoneNumberRegex}"
+                                title="${wrongNumber}"
                         />
-                        <span class="text-danger clearfix">
-
-                        </span>
                     </div>
                     <div>
                         <label for="password">
@@ -92,10 +101,10 @@
                                 id="password"
                                 type="password"
                                 name="password"
+                                required
+                                pattern="${passwordRegex}"
+                                title="${wrongPassword}"
                         />
-                        <span class="text-danger clearfix">
-
-                        </span>
                     </div>
                     <input type="hidden" name="_csrf"/>
                     <div class="form-group">
@@ -107,6 +116,10 @@
                         </button>
                     </div>
                 </form>
+                <div class="col-sm text-center">
+                    <a href="${pageContext.request.contextPath}/login"><fmt:message key="login.label"
+                                                                                    bundle="${msg}"/></a>
+                </div>
             </div>
         </div>
     </div>

@@ -6,7 +6,9 @@ import org.brs.library.service.BookService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class EditBookCommand implements Command {
     private BookService bookService;
@@ -25,11 +27,12 @@ public class EditBookCommand implements Command {
             return "redirect:/admin/edit-books";
         }
         if (request.getRequestURI().endsWith("accept")) {
+            List<String> authorsLit = Arrays.stream(authors).filter(s -> !s.equals("")).collect(Collectors.toList());
             bookService.update(Book.builder()
                     .setId(bookId)
                     .setName(name)
                     .setAttribute(attribute)
-                    .setAuthors(Arrays.asList(authors))
+                    .setAuthors(authorsLit)
                     .build());
             return "redirect:/admin/edit-books";
         }

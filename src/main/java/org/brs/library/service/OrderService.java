@@ -21,11 +21,15 @@ public class OrderService {
         return this.orderDao.findById(orderId);
     }
 
-    public List<Order> findAll() {
-        return this.orderDao.findAll();
+    public List<Order> findAll(long numberOfItems, long offset) {
+        return this.orderDao.findAll(numberOfItems, offset);
     }
 
     public void deleteOrder(Long id) {
         this.orderDao.delete(id);
+    }
+
+    public long getNumberOfOrders() {
+        return this.orderDao.getNumberOfOrders();
     }
 }

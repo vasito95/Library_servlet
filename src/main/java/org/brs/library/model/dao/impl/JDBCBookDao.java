@@ -23,7 +23,7 @@ public class JDBCBookDao implements BookDao {
     public static final String UPDATE_BOOK_DO_RETURN = "UPDATE book SET user_id=?, in_use_by=?, is_in_use=? where book.id=? and book.user_id=?";
     public static final String UPDATE_BOOK_ASSIGN_TO_USER = "UPDATE book SET user_id=?, in_use_by=?, is_in_use=? where book.id=? and book.is_in_use=?";
     public static final String SELECT_ALL_FREE = "select * from book where book.is_in_use =?";
-    public static final String SELECT_ALL_BOOKS_WITH_READERS = "select book.id, book.name, book.in_use_by, user.username from book inner join user on book.user_id=user.id";
+    public static final String SELECT_ALL_BOOKS_WITH_READERS = "select book.id, book.name, book.in_use_by, user.username, user.phone_number from book inner join user on book.user_id=user.id";
     public static final String SELECT_ALL_BY_USER_ID = "select * from book where book.user_id =?";
     public static final String SELECT_BY_NAME = "SELECT * from book where name =?";
     public static final String SELECT_ALL_BOOKS = "select * from book";
@@ -239,7 +239,7 @@ public class JDBCBookDao implements BookDao {
 
     @Override
     public void delete(Long id) {
-        try (Connection connection = ConnectionPool.getConnection();) {
+        try (Connection connection = ConnectionPool.getConnection()) {
             deleteAuthors(connection, id);
             try (PreparedStatement st = connection.prepareStatement(DELETE_BOOK)) {
                 st.setLong(1, id);

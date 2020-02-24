@@ -20,13 +20,17 @@ public class LoginCommand implements Command {
         final String email = request.getParameter("email");
         final String password = request.getParameter("password");
 
-        if (ValidationHelper.isStringsNoTNullOrEmpty(email,password)) {
+        if (ValidationHelper.isStringNullOrEmpty(email, password)) {
+            return "/login.jsp";
+        }
+        if (!ValidationHelper.validateLoginForm(email, password)) {
+            request.setAttribute("error", "Form not valid");
             return "/login.jsp";
         }
         User user;
         try {
             user = userService.findUserByEmailAndPassword(email.trim(), password);
-        } catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             request.setAttribute("error", "User not found");
             return "/login.jsp";
         }
